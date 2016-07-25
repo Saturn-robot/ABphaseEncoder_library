@@ -63,6 +63,7 @@ int runCommand() {
 // the setup function runs once when you press reset or power the board
 void setup() {
 	Serial.begin(57600);
+  initEncoders();
 }
 
 // the loop function runs over and over again until power down or reset
