@@ -1,9 +1,6 @@
-/*
-Name:		encoder_driver.h
-Created:	7/25/2016 9:36:52 PM
-Author:	Chaoyang Liu
-*/
-
+/* *******************************************************************
+   Encoder driver function definitions by Chaoyang Liu
+   ***************************************************************** */
 #include "encoder_driver.h"
 
 // variables to store the number of encoder pulses

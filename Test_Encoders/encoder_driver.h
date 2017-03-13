@@ -1,5 +1,5 @@
 /* *******************************************************************
-   Encoder driver function definitions by Chaoyang Liu
+   Encoder driver function declarations by Chaoyang Liu
    ***************************************************************** */
 #include "command.h"
   //below can be changed, but should be PORTD pins;
