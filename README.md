@@ -1,13 +1,16 @@
+[![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatus.org/#inactive)
+
 # 概述
 
-该程序主要是对编码器进行测试。通过串行端口，我们可以与程序进行交互，输入相应的命令，就可以获取到相应的数据。
+本程序是AB相编码器的驱动程序，可以用于对编码器的测试。通过Arduino串口监视器，我们可以与该程序进行交互，输入相应的命令，即可以获取到相应的数据。
 
-# 硬件要求
+本程序已在下述硬件环境进行测试：
 
-- YC2010-28磁编码器4个
+- AB相磁编码器4个
 - 直流减速电动机4个(12V, 366rpm)
 - Arduino Mega 2560
-- 杜邦线若干
+
+其他硬件可能需要做相应的更改，不过改动应该很小。
 
 # 引脚连接
 
@@ -32,9 +35,11 @@
 | :-------------: | :-------------: | :-------------: | :-------------: |  :-------------: | :-------------: |  :-------------: |
 | Mega 2560 | 2 | 3 | 21 |  20 | 19 | 18 |    
 
-详细内容请参考：<https://www.arduino.cc/en/Reference/AttachInterrupt>
+不同的Arduino的中断管脚是不同的，详细内容请参考：<https://www.arduino.cc/en/Reference/AttachInterrupt>
 
-# 使用手册
+# 运行
+
+将该程序下载到arduino板中即可运行。
 
 ## 获取编码器数据
 
