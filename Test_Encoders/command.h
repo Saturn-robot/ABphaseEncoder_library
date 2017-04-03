@@ -3,9 +3,7 @@
 
 #define READ_ENCODERS  'e'
 #define RESET_ENCODERS 'r'
-#define FLEFT           1
-#define FRIGHT          0
-#define BLEFT           3
-#define BRIGHT          2
+#define LEFT           1
+#define RIGHT          0
 
 #endif

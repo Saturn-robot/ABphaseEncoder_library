@@ -5,145 +5,99 @@
 
 // variables to store the number of encoder pulses
 // for each motor
-volatile unsigned long fleftCount = 0;
-volatile unsigned long frightCount = 0;
-volatile unsigned long bleftCount = 0;
-volatile unsigned long brightCount = 0;
+volatile long left_enc_pos = 0L;
+volatile long right_enc_pos = 0L;
 
-  /* Wrap the encoder initializeing to be run in the main setup() function */
-  void initEncoders() {
-    pinMode(FLH_ENCODER_A, INPUT);
-    pinMode(FLH_ENCODER_B, INPUT);
-    pinMode(BRH_ENCODER_A, INPUT);
-    pinMode(BRH_ENCODER_B, INPUT);
-    pinMode(FRH_ENCODER_A, INPUT);
-    pinMode(FRH_ENCODER_B, INPUT);
-    pinMode(BLH_ENCODER_A, INPUT);
-    pinMode(BLH_ENCODER_B, INPUT);
+void initEncoders()
+{
+    pinMode(LEFT_ENC_A, INPUT);
+    pinMode(LEFT_ENC_B, INPUT);
+    pinMode(RIGHT_ENC_A, INPUT);
+    pinMode(RIGHT_ENC_B, INPUT);
 
-    // initialize hardware interrupts
-    attachInterrupt(4, fleftEncoderEvent, CHANGE);
-    attachInterrupt(5, frightEncoderEvent, CHANGE);
-    attachInterrupt(3, bleftEncoderEvent, CHANGE);
-    attachInterrupt(2, brightEncoderEvent, CHANGE);
-
-    Serial.begin(57600);
-  }
+    attachInterrupt(0, leftEncoderEvent, CHANGE);
+    attachInterrupt(1, rightEncoderEvent, CHANGE);
+}
 
   // encoder event for the interrupt call
-  void fleftEncoderEvent() {
-    if (digitalRead(FLH_ENCODER_A) == HIGH) {
-      if (digitalRead(FLH_ENCODER_B) == LOW) {
-        fleftCount++;
+void leftEncoderEvent()
+{
+    if (digitalRead(LEFT_ENC_A) == HIGH)
+    {
+      if (digitalRead(LEFT_ENC_B) == LOW)
+      {
+        left_enc_pos++;
       }
-      else {
-        fleftCount--;
-      }
-    }
-    else {
-      if (digitalRead(FLH_ENCODER_B) == LOW) {
-        fleftCount--;
-      }
-      else {
-        fleftCount++;
+      else
+      {
+        left_enc_pos--;
       }
     }
-  }
-
-  // encoder event for the interrupt call
-  void frightEncoderEvent() {
-    if (digitalRead(FRH_ENCODER_A) == HIGH) {
-      if (digitalRead(FRH_ENCODER_B) == LOW) {
-        frightCount++;
-      }
-      else {
-        frightCount--;
-      }
-    }
-    else {
-      if (digitalRead(FRH_ENCODER_B) == LOW) {
-        frightCount--;
-      }
-      else {
-        frightCount++;
-      }
-    }
-  }
-
-  void bleftEncoderEvent() {
-    if (digitalRead(BLH_ENCODER_A) == HIGH) {
-      if (digitalRead(BLH_ENCODER_B) == LOW) {
-        bleftCount++;
-      }
-      else {
-        bleftCount--;
-      }
-    }
-    else {
-      if (digitalRead(BLH_ENCODER_B) == LOW) {
-        bleftCount--;
-      }
-      else {
-        bleftCount++;
-      }
-    }
-  }
-
-  // encoder event for the interrupt call
-  void brightEncoderEvent() {
-    if (digitalRead(BRH_ENCODER_A) == HIGH) {
-      if (digitalRead(BRH_ENCODER_B) == LOW) {
-        brightCount++;
-      }
-      else {
-        brightCount--;
-      }
-    }
-    else {
-      if (digitalRead(BRH_ENCODER_B) == LOW) {
-        brightCount--;
-      }
-      else {
-        brightCount++;
-      }
-    }
-  }
-
-long readEncoder(int i) {
-    if (i == FLEFT)
-      return fleftCount;
-    else if (i == FRIGHT)
-      return frightCount;
-    else if (i == BLEFT)
-      return bleftCount;
     else
-      return brightCount;
-  }
+    {
+      if (digitalRead(LEFT_ENC_B) == LOW)
+      {
+        left_enc_pos--;
+      }
+      else
+      {
+        left_enc_pos++;
+      }
+    }
+}
 
-  /* Wrap the encoder reset function */
-  void resetEncoder(int i) {
-    if (i == FLEFT) {
-      fleftCount = 0L;
-      return;
+// encoder event for the interrupt call
+void rightEncoderEvent()
+{
+    if (digitalRead(RIGHT_ENC_A) == HIGH)
+    {
+      if (digitalRead(RIGHT_ENC_B) == LOW)
+      {
+        right_enc_pos++;
+      }
+      else
+      {
+        right_enc_pos--;
+      }
     }
-    else if (i == FRIGHT) {
-      frightCount = 0L;
-      return;
+    else
+    {
+      if (digitalRead(RIGHT_ENC_B) == LOW)
+      {
+        right_enc_pos--;
+      }
+      else
+      {
+        right_enc_pos++;
+      }
     }
-    else if (i == BLEFT) {
-      bleftCount = 0L;
-      return;
-    }
-    else {
-      brightCount = 0L;
-      return;
-    }
-  }
+}
+
+/* Wrap the encoder reading function */
+long readEncoder(int i)
+{
+    if (i == LEFT) return left_enc_pos;
+    else return -right_enc_pos;    // It's just because my right encoder get reverse value so if yours is normal, don't add "-"
+}
 
 /* Wrap the encoder reset function */
-void resetEncoders() {
-  resetEncoder(FLEFT);
-  resetEncoder(FRIGHT);
-  resetEncoder(BLEFT);
-  resetEncoder(BRIGHT);
+void resetEncoder(int i)
+{
+    if (i == LEFT)
+    {
+      left_enc_pos=0L;
+      return;
+    }
+    else
+    {
+      right_enc_pos=0L;
+      return;
+    }
+}
+
+/* Wrap the encoder reset function */
+void resetEncoders()
+{
+    resetEncoder(LEFT);
+    resetEncoder(RIGHT);
 }

@@ -60,13 +60,9 @@ int runCommand() {
 
 	switch (cmd) {
   case READ_ENCODERS:
-      Serial.print(readEncoder(FLEFT));
+      Serial.print(readEncoder(LEFT));
       Serial.print(F(" "));
-      Serial.print(readEncoder(FRIGHT));
-      Serial.print(F(" "));
-      Serial.print(readEncoder(BLEFT));
-      Serial.print(F(" "));
-      Serial.println(readEncoder(BRIGHT));
+      Serial.println(readEncoder(RIGHT));
       break;
    case RESET_ENCODERS:
       resetEncoders();
