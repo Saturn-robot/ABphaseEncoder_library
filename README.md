@@ -1,71 +1,47 @@
-[![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](http://www.repostatus.org/badges/latest/inactive.svg)](http://www.repostatus.org/#inactive)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
-# 概述
+# Overview
 
-本程序是AB相编码器的驱动程序，可以用于对编码器的测试。通过Arduino串口监视器，我们可以与该程序进行交互，输入相应的命令，即可以获取到相应的数据。
+The driver is to drive AB phase encoders. You can get two counters simultaneously using it.
 
-本程序已在下述硬件环境进行测试：
+# Installation
 
-- AB相磁编码器2个
-- 直流减速电动机2个(12V, 366rpm)
-- Arduino Mega 2560
+You can install this library via the Library Manager interface. For example, as for Arduino 1:1.0.5+dfsg2-2, you can install it from directory in **Sketch** menu > Import library... > Add library... in form of zip file or folder.
 
-其他硬件可能需要做相应的更改，不过改动应该很小。
+If you want to add a library manually, you need to uncompress it and put in the proper directory. Arduino libraries are managed in three different places: inside the IDE installation folder, inside the core folder and in the libraries folder inside your sketchbook. The location of your sketchbook defaults to “..\<you>\DOCUMENTS\Arduino” on Windows machines. The path is clearly shown in the Preferences panel. If you want to see where the sketchbook defaults open Preferences under File.
 
-# 引脚连接
+# Usage
 
-| encoders | Arduino  |
-| :------------- | :------------- |
-| 左A相 | D2 |
-| 左B相 | D22 |
-| 右A相 | D3 |
-| 右B相 | D24 |
-| 左+5V  | +5V |
-| 左GND | GND |
-| 右+5V  | +5V |
-| 右GND | GND |  
+## Create ABPhaseEncoders
 
-下图为具体的连接方法（以左前轮为例）：
+Creating an Object which contains four parameters:port of left encoder output-A, port of left encoder output-B, right encoder output-A and right encoder output-B. You must connect both output-As with digital pins usable for interrupts of your arduino board. Note that you should create **only one** ABPhaseEncoders object in a program and if you create several objects, only **the last** takes effect.
 
-![encoder](https://github.com/Saturn-robot/Encoder_driver/blob/master/Test_Encoders/circuit_diagram/FIT0403_encoder.png)
-
-1、2接电源的正负极;
-
-3接GND管脚，4接5V管脚;
-
-5接中断管脚，6接普通的数字管脚;
-
-注意：5,6引脚需要特别说明：我们所使用的Arduino Mega2560有6个中断管脚，如下表所示：
-
-
-| 型号 | #0中断 | #1中断 | #2中断 | #3中断 | #4中断 | #5中断 |    
-| :-------------: | :-------------: | :-------------: | :-------------: |  :-------------: | :-------------: |  :-------------: |
-| Mega 2560 | 2 | 3 | 21 |  20 | 19 | 18 |    
-
-不同的Arduino的中断管脚是不同的，详细内容请参考：<https://www.arduino.cc/en/Reference/AttachInterrupt>
-
-# 运行
-
-将该程序上传到arduino板中即可运行。
-
-## 获取编码器数据
-
-使用`e`命令即可获取到两个编码器的数据:
-
-    e
-
-## 编码器清零
-
-使用`r`命令即可使编码器数据清零。
-
-具体可以查看程序中的`command.h`文件:
+You can find which pins are usable for interrupts here:<https://www.arduino.cc/en/Reference/AttachInterrupt>
 
 ```
-#define READ_ENCODERS  'e'
-#define RESET_ENCODERS 'r'
+ABPhaseEncoders encoders(RIGHT_OUTPUT_A, RIGHT_OUTPUT_B, LEFT_OUTPUT_A, LEFT_OUTPUT_B);
 ```
 
-# 注意事项
+## Get counts of encoders
 
-- 安装增量式磁编码器时，要注意磁鼓不要接触到霍尔元件；
-- 安装编码盘时，要注意导线的方向。安装之前最好做一个大致的布局，否则焊好之后很难改变导线的朝向；
+This library offer a method to return current count of encoder and you need to specify which encoder to read as parameter. The parameter is either `LEFT` or `RIGHT`.
+
+```
+encoders.readEncoder(LEFT);
+encoders.readEncoder(RIGHT);
+```
+
+## Reverse value of encoders
+
+If you get values which are reverse with the direction of wheel rotation, you can use this method.
+
+```
+// When you get reversed value, just reverse it
+encoders.rightReverse();
+```
+
+This library is very easy to use. You can learn it from codes in example folder.
+
+# License
+
+This library is licensed under the GNU General Public License, v3. A copy of this license is included in the file [LICENSE](LICENSE).
